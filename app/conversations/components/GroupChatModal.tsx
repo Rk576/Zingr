@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Button from "@/app/components/Button";
 import Modal from "@/app/components/Modal";
@@ -11,52 +11,58 @@ import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 
-
 interface GroupChatModalProps {
-    isOpen?: boolean;
-    onClose: () => void;
-    users: User[]
+  isOpen?: boolean;
+  onClose: () => void;
+  users: User[]
+}
+
+const GroupChatModal: React.FC<GroupChatModalProps> = ({
+  isOpen,
+  onClose,
+  users
+}) => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: {
+      errors
+    }
+  } = useForm<FieldValues>({
+    defaultValues: {
+      name: '',
+      members: []
+    }
+  });
+
+  const members = watch('members');
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    setIsLoading(true);
+
+    axios.post('/api/conversations', {
+      ...data,
+      isGroup: true
+    })
+    .then(() => {
+      router.refresh();
+      onClose();
+    })
+    .catch(() => toast.error('Something went wrong'))
+    .finally(() => setIsLoading(false))
   }
 
-const GroupChatModal:React.FC<GroupChatModalProps> = ({isOpen,onClose,users}) => {
-    const router = useRouter();
-    const [isLoading,setIsLoading]=useState(false);
-
-    const {
-        register,
-        handleSubmit,
-        setValue,
-        watch,
-        formState: {
-          errors
-        }
-      } = useForm<FieldValues>({
-        defaultValues: {
-          name: '',
-          members: []
-        }
-      });
-    const members=watch('members');
-
-    const onSubmit:SubmitHandler<FieldValues>=(data)=>{
-        setIsLoading(true);
-        axios.post('/api/conversations', {
-            ...data,
-            isGroup: true
-          })
-          .then(() => {
-            router.refresh();
-            onClose();
-          })
-          .catch(() => toast.error('Something went wrong'))
-          .finally(() => setIsLoading(false))
-    }
-  return (
+  return ( 
     <Modal
-    isOpen={isOpen}
-    onClose={onClose}
+      isOpen={isOpen}
+      onClose={onClose}
     >
-         <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <h2
@@ -136,7 +142,7 @@ const GroupChatModal:React.FC<GroupChatModalProps> = ({isOpen,onClose,users}) =>
         </div>
       </form>
     </Modal>
-  )
+   );
 }
-
-export default GroupChatModal
+ 
+export default GroupChatModal;

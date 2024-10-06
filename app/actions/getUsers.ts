@@ -1,10 +1,11 @@
 import prisma from "@/app/libs/prismadb";
+
 import getSession from "./getSession";
 
 const getUsers = async () => {
   const session = await getSession();
 
-  if (!session || !session.user || !session.user.email) {
+  if (!session?.user?.email) {
     return [];
   }
 
@@ -15,14 +16,13 @@ const getUsers = async () => {
       },
       where: {
         NOT: {
-          email: session.user.email,
-        },
-      },
+          email: session.user.email
+        }
+      }
     });
 
     return users;
   } catch (error: any) {
-    console.error("Error fetching users:", error);
     return [];
   }
 };
