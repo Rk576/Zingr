@@ -21,7 +21,7 @@ const getConversationById = async (
     });
 
     return conversation;
-  } catch (error: any) {
+  } catch (error) {
     return null;
   }
 };

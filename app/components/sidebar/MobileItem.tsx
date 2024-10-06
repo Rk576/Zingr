@@ -1,30 +1,25 @@
-"use client";
+'use client';
 
 import Link from "next/link";
 import clsx from "clsx";
+import { IconType } from "react-icons"; // If you're using 'react-icons', use IconType
 
 interface MobileItemProps {
   href: string;
-  icon: any;
+  icon: IconType; // Change 'any' to 'IconType' (or React.ElementType)
   active?: boolean;
   onClick?: () => void;
 }
 
 const MobileItem: React.FC<MobileItemProps> = ({
   href,
-  icon: Icon,
+  icon: Icon, // Capitalize as it's a component
   active,
   onClick
 }) => {
-  const handleClick = () => {
-    if (onClick) {
-      return onClick();
-    }
-  }
-
   return ( 
     <Link 
-      onClick={onClick}
+      onClick={onClick} // You are already handling the click here, no need for `handleClick`
       href={href}
       className={clsx(`
         group
@@ -45,7 +40,7 @@ const MobileItem: React.FC<MobileItemProps> = ({
     >
       <Icon className="h-6 w-6" />
     </Link>
-   );
+  );
 }
- 
+
 export default MobileItem;

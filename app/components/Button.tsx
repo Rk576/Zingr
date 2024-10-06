@@ -1,31 +1,33 @@
 'use client';
-import clsx from 'clsx';
-import React from 'react'
-interface ButtonProps{
-    type?:'button' | 'submit' | 'reset' | undefined;
-    fullWidth?:boolean;
-    children?:React.ReactNode;
-    onClick?:()=>void;
-    secondary?: boolean;
-    danger?: boolean;
-    disabled?: boolean;
-}
-type Props = {}
 
-const Button: React.FC<ButtonProps> =({
-type,
-fullWidth,
-children,
-onClick,
-secondary,
-danger,
-disabled
-})=>{
-  return (
-    <button onClick={onClick}
-    type={type}
-    disabled={disabled}
-    className={clsx(`
+import clsx from 'clsx';
+import React from 'react';
+
+interface ButtonProps {
+  type?: 'button' | 'submit' | 'reset';  // Removed `undefined` since it's optional
+  fullWidth?: boolean;
+  children: React.ReactNode;  // Made `children` required as it's always needed inside <button>
+  onClick?: () => void;
+  secondary?: boolean;
+  danger?: boolean;
+  disabled?: boolean;
+}
+
+const Button: React.FC<ButtonProps> = ({
+  type = 'button',  // Default type is set
+  fullWidth = false,
+  children,
+  onClick,
+  secondary = false,
+  danger = false,
+  disabled = false
+}) => {
+  return ( 
+    <button
+      onClick={onClick}
+      type={type}
+      disabled={disabled}
+      className={clsx(`
         flex
         justify-center
         rounded-md
@@ -36,19 +38,16 @@ disabled
         focus-visible:outline
         focus-visible:outline-2
         focus-visible:outline-offset-2
-        `,
-        disabled && "opacity-50 cursor-default",
-        fullWidth && "w-full",
-        secondary ? "text-gray-900" : "text-white",
-        danger && "bg-rose-500 hover:bg-rose-600 focus-visible:outline-rose-600",
-        !secondary && !danger && "bg-sky-500 hover:bg-sky-600 focus-visible::outline-sky-600"
-
-    )}
-    
+      `,
+      disabled && "opacity-50 cursor-default",
+      fullWidth && "w-full",
+      secondary ? 'text-gray-900' : 'text-white',
+      danger ? 'bg-rose-500 hover:bg-rose-600 focus-visible:outline-rose-600' : 'bg-sky-500 hover:bg-sky-600 focus-visible:outline-sky-600'
+      )}
     >
-        {children}
+      {children}
     </button>
-  )
+  );
 }
 
-export default Button
+export default Button;
