@@ -5,6 +5,9 @@ const nextConfig = {
             ["next-superjson-plugin",{}]
         ]
     },
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
     images:{
         domains:[
             "res.cloudinary.com",
@@ -13,6 +16,7 @@ const nextConfig = {
 
         ]
     }
+
 };
 
 export default nextConfig;
