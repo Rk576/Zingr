@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import Modal from "../Modal";
 import Input from "../inputs/Input";
 import Image from "next/image";
-import { CldUploadButton } from "next-cloudinary";
+import { CldUploadButton, CloudinaryUploadWidgetResults } from "next-cloudinary"; // Import the correct types
 import Button from "../Button";
 
 interface SettingsModalProps {
@@ -17,7 +17,6 @@ interface SettingsModalProps {
   onClose: () => void;
   currentUser: User;
 }
-
 
 const SettingsModal: React.FC<SettingsModalProps> = ({
   isOpen,
@@ -43,11 +42,16 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   });
 
   const image = watch('image');
-//@ts-ignore
-  const handleUpload = (result:any) => {
-    setValue('image', result?.info?.secure_url, {
-      shouldValidate: true
-    })
+
+  // Adjusted handleUpload to handle optional 'info' property correctly
+  const handleUpload = (result: CloudinaryUploadWidgetResults) => {
+    if (result.info && typeof result.info === 'object' && result.info.secure_url) {
+      setValue('image', result.info.secure_url, {
+        shouldValidate: true
+      });
+    } else {
+      toast.error('Upload failed. Please try again.');
+    }
   }
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -59,7 +63,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
       onClose();
     })
     .catch(() => toast.error('Something went wrong!'))
-    .finally(() => setIsLoading(false))
+    .finally(() => setIsLoading(false));
   }
 
   return ( 
@@ -120,7 +124,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                   />
                   <CldUploadButton
                     options={{ maxFiles: 1 }}
-                    onUpload={handleUpload}
+                    onSuccess={handleUpload} // No more errors here
                     uploadPreset="g1usl1sb"
                   >
                     <Button

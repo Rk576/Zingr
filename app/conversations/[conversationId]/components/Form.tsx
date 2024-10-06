@@ -11,7 +11,6 @@ import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
 import { CldUploadButton } from "next-cloudinary";
 import MessageInput from "./MessageInput";
 
-
 // Define the type for the Cloudinary upload result
 interface CloudinaryUploadResult {
   info: {
@@ -26,7 +25,7 @@ const Form = () => {
     register,
     handleSubmit,
     setValue,
-    formState: { errors }
+    formState: { errors }  // You can keep this if you want to show error messages elsewhere in the form
   } = useForm<FieldValues>({
     defaultValues: {
       message: ''
@@ -79,7 +78,6 @@ const Form = () => {
         <MessageInput
           id="message"
           register={register}
-          errors={errors}
           required
           placeholder="Write a message"
         />
