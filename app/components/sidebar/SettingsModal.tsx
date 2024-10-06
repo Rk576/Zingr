@@ -18,6 +18,7 @@ interface SettingsModalProps {
   currentUser: User;
 }
 
+
 const SettingsModal: React.FC<SettingsModalProps> = ({
   isOpen,
   onClose,
@@ -42,7 +43,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   });
 
   const image = watch('image');
-
+//@ts-ignore
   const handleUpload = (result:any) => {
     setValue('image', result?.info?.secure_url, {
       shouldValidate: true
