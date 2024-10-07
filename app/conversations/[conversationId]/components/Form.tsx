@@ -66,7 +66,7 @@ const Form = () => {
     >
       <CldUploadButton
         options={{ maxFiles: 1 }}
-        onUpload={handleUpload}  // Fix: type assertion used in `handleUpload`
+        onSuccess={handleUpload}  // Fix: type assertion used in `handleUpload`
         uploadPreset="tctmgfm4"
       >
         <HiPhoto size={30} className="text-sky-500" />
